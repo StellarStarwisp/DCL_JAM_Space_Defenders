@@ -70,7 +70,7 @@ function SpawnShips(amount, yPos, giant) {
     enemyShipInstance.addComponent(new Billboard())
   
     // starting positions
-    transform.position.set(15 + i * (18/amount), yPos, 37)
+    transform.position.set(19.5 + i * (12/amount), yPos, 37)
   
     // Give ship stats
     enemyShipInstance.addComponent(new ShipStats)
@@ -78,8 +78,8 @@ function SpawnShips(amount, yPos, giant) {
     // If boss ship
     if (giant == 1)
     {
-      enemyShipInstance.getComponent(Transform).scale = new Vector3(1.5,1.5,1.5) // Boss ship
-      enemyShipInstance.getComponent(ShipStats).health = 30 // Boss ship
+      enemyShipInstance.getComponent(Transform).scale = new Vector3(2.0,2.0,2.0) // Boss ship
+      enemyShipInstance.getComponent(ShipStats).health = 50 // Boss ship
     }
   
     // Make clickable
@@ -359,7 +359,7 @@ class MainGameLoop {
       remainingTxt.value = "ENEMIES LEFT: " + (10 - killsThisRound)
       if (killsThisRound >= 10)
       {
-        speed = 1.6
+        speed = 1.5
         killsThisRound = 0
         gamePhase++
         SpawnShips(10, 8, 0)
@@ -375,7 +375,7 @@ class MainGameLoop {
       remainingTxt.value = "ENEMIES LEFT: " + (24 - killsThisRound)
       if (killsThisRound >= 24)
       {
-        speed = 1.4
+        speed = 1.0
         killsThisRound = 0
         gamePhase++
         SpawnShips(5, 8, 0)
