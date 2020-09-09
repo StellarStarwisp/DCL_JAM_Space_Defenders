@@ -1,7 +1,7 @@
 
 //-------------------------------------------------------
 // Configuration
-const speed = 1.9 // Speed of enemy ships coming towards player
+let speed = 1.8 // Speed of enemy ships coming towards player
 
 //-------------------------------------------------------
 // Test empty entity
@@ -52,7 +52,7 @@ let playerHealth = 5
 
 //-------------------------------------------------------
 // Function to spawn ships
-function SpawnShips(amount, yPos) {
+function SpawnShips(amount, yPos, giant) {
   
   for (let i = 0; i < amount; i++) 
   {
@@ -74,6 +74,13 @@ function SpawnShips(amount, yPos) {
   
     // Give ship stats
     enemyShipInstance.addComponent(new ShipStats)
+
+    // If boss ship
+    if (giant == 1)
+    {
+      enemyShipInstance.getComponent(Transform).scale = new Vector3(1.5,1.5,1.5) // Boss ship
+      enemyShipInstance.getComponent(ShipStats).health = 30 // Boss ship
+    }
   
     // Make clickable
   
@@ -258,7 +265,7 @@ function StartPhaseThree() {
   engine.addSystem(new MovingShips())
 
   // Spawn 4 enemy ships
-  SpawnShips(4, 8);
+  SpawnShips(4, 8, 0);
 
   // Move Kat up to the ship
   Kat.getComponent(Transform).translate(new Vector3(0,1,5))
@@ -322,50 +329,67 @@ class MainGameLoop {
 
     if (gamePhase == 3) // Space shooting game has begun
     {
-      lvlTxt.value = "LEVEL 1"
+      lvlTxt.value = "LEVEL 1 of 5"
       remainingTxt.value = "ENEMIES LEFT: " + (4 - killsThisRound)
       if (killsThisRound >= 4)
       {
         killsThisRound = 0
         gamePhase++
-        SpawnShips(7, 8)
+        SpawnShips(7, 8, 0)
         voice5.getComponent(AudioSource).playOnce()
       }
     }
 
     if (gamePhase == 4) // Next round
     {
-      lvlTxt.value = "LEVEL 2"
+      lvlTxt.value = "LEVEL 2 of 5"
       remainingTxt.value = "ENEMIES LEFT: " + (7 - killsThisRound)
       if (killsThisRound >= 7)
       {
         killsThisRound = 0
         gamePhase++
-        SpawnShips(11, 8)
+        SpawnShips(10, 8, 0)
         voice6.getComponent(AudioSource).playOnce()
       }
     }
 
     if (gamePhase == 5) // Next round
     {
-      lvlTxt.value = "LEVEL 3"
-      remainingTxt.value = "ENEMIES LEFT: " + (11 - killsThisRound)
-      if (killsThisRound >= 11)
+      lvlTxt.value = "LEVEL 3 of 5"
+      remainingTxt.value = "ENEMIES LEFT: " + (10 - killsThisRound)
+      if (killsThisRound >= 10)
       {
+        speed = 1.6
         killsThisRound = 0
         gamePhase++
-        SpawnShips(12, 8)
-        SpawnShips(9, 12)
-        SpawnShips(6, 16)
+        SpawnShips(10, 8, 0)
+        SpawnShips(8, 12, 0)
+        SpawnShips(6, 16, 0)
         voice7.getComponent(AudioSource).playOnce()
       }
     }
 
-    if (gamePhase == 6) // Won
+    if (gamePhase == 6) // Next round
     {
-      lvlTxt.value = "LEVEL 4"
-      remainingTxt.value = "ENEMIES LEFT: " + (27 - killsThisRound)
-      if (killsThisRound >= 27 && playerHealth > 0)
+      lvlTxt.value = "LEVEL 4 of 5"
+      remainingTxt.value = "ENEMIES LEFT: " + (24 - killsThisRound)
+      if (killsThisRound >= 24)
+      {
+        speed = 1.4
+        killsThisRound = 0
+        gamePhase++
+        SpawnShips(5, 8, 0)
+        SpawnShips(1, 12, 1)
+        SpawnShips(5, 16, 0)
+        voice11.getComponent(AudioSource).playOnce()
+      }
+    }
+
+    if (gamePhase == 7) // Won
+    {
+      lvlTxt.value = "LEVEL 5 of 5"
+      remainingTxt.value = "ENEMIES LEFT: " + (11 - killsThisRound)
+      if (killsThisRound >= 11 && playerHealth > 0)
       {
         voice10.getComponent(AudioSource).playOnce()
         gamePhase++
@@ -465,7 +489,7 @@ heart5.positionY = -200
 // LEVEL TEXT
 
 const lvlTxt = new UIText(canvas)
-lvlTxt.value = "LEVEL 1"
+lvlTxt.value = "LEVEL 1/5"
 lvlTxt.fontSize = 24
 lvlTxt.width = 120
 lvlTxt.height = 30
@@ -593,3 +617,9 @@ voice10.addComponent(new AudioSource(new AudioClip("audio/voice/wewon.mp3")))
 voice10.addComponent(new Transform())
 voice10.getComponent(Transform).position = Camera.instance.position
 engine.addEntity(voice10)
+
+const voice11 = new Entity()
+voice11.addComponent(new AudioSource(new AudioClip("audio/voice/youvegotthisundercontrol.mp3")))
+voice11.addComponent(new Transform())
+voice11.getComponent(Transform).position = Camera.instance.position
+engine.addEntity(voice11)
