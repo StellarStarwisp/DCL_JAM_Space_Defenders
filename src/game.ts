@@ -1,7 +1,7 @@
 
 //-------------------------------------------------------
 // Configuration
-let speed = 1.8 // Speed of enemy ships coming towards player
+let speed = 1.7 // Speed of enemy ships coming towards player
 
 //-------------------------------------------------------
 // Test empty entity
@@ -48,7 +48,7 @@ let timer = 0
 let tick = 0
 let tock = 0
 let killsThisRound = 0
-let playerHealth = 5
+let playerHealth = 8
 
 //-------------------------------------------------------
 // Function to spawn ships
@@ -176,7 +176,13 @@ class MovingShips implements ISystem {
 
           engine.removeEntity(entity)
 
-          if (playerHealth == 4)
+          if (playerHealth == 7)
+            heart8.visible = false
+          else if (playerHealth == 6)
+            heart7.visible = false
+          else if (playerHealth == 5)
+            heart6.visible = false
+          else if (playerHealth == 4)
             heart5.visible = false
           else if (playerHealth == 3)
             heart4.visible = false
@@ -359,7 +365,7 @@ class MainGameLoop {
       remainingTxt.value = "ENEMIES LEFT: " + (10 - killsThisRound)
       if (killsThisRound >= 10)
       {
-        speed = 1.5
+        speed = 1.2
         killsThisRound = 0
         gamePhase++
         SpawnShips(10, 8, 0)
@@ -375,12 +381,12 @@ class MainGameLoop {
       remainingTxt.value = "ENEMIES LEFT: " + (24 - killsThisRound)
       if (killsThisRound >= 24)
       {
-        speed = 1.0
+        speed = 1.1
         killsThisRound = 0
         gamePhase++
-        SpawnShips(5, 8, 0)
+        SpawnShips(3, 8, 0)
         SpawnShips(1, 12, 1)
-        SpawnShips(5, 16, 0)
+        SpawnShips(3, 16, 0)
         voice11.getComponent(AudioSource).playOnce()
       }
     }
@@ -388,12 +394,14 @@ class MainGameLoop {
     if (gamePhase == 7) // Won
     {
       lvlTxt.value = "LEVEL 5 of 5"
-      remainingTxt.value = "ENEMIES LEFT: " + (11 - killsThisRound)
-      if (killsThisRound >= 11 && playerHealth > 0)
+      remainingTxt.value = "ENEMIES LEFT: " + (7 - killsThisRound)
+      if (killsThisRound >= 7 && playerHealth > 0)
       {
         voice10.getComponent(AudioSource).playOnce()
         gamePhase++
         lvlTxt.value = "WON!"
+        lvlTxt.fontSize = 48
+        lvlTxt.positionY = 130
       }
     }
 
@@ -484,6 +492,36 @@ heart5.width = 256
 heart5.height = 256
 heart5.positionX = 180
 heart5.positionY = -200
+
+const heart6 = new UIImage(rect, healthHeartTexture)
+heart6.hAlign = 'left'
+heart6.vAlign = 'bottom'
+heart6.sourceWidth = 1024
+heart6.sourceHeight = 1024
+heart6.width = 256
+heart6.height = 256
+heart6.positionX = 220
+heart6.positionY = -200
+
+const heart7 = new UIImage(rect, healthHeartTexture)
+heart7.hAlign = 'left'
+heart7.vAlign = 'bottom'
+heart7.sourceWidth = 1024
+heart7.sourceHeight = 1024
+heart7.width = 256
+heart7.height = 256
+heart7.positionX = 260
+heart7.positionY = -200
+
+const heart8 = new UIImage(rect, healthHeartTexture)
+heart8.hAlign = 'left'
+heart8.vAlign = 'bottom'
+heart8.sourceWidth = 1024
+heart8.sourceHeight = 1024
+heart8.width = 256
+heart8.height = 256
+heart8.positionX = 300
+heart8.positionY = -200
 
 
 // LEVEL TEXT
